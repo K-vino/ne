@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXORA AI - Decision Intelligence System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 NEXORA AI</h1>
+            <p class="subtitle">Explainable Decision Intelligence System</p>
+            <div class="progress-bar">
+                <div class="progress-step active" data-step="1">Context</div>
+                <div class="progress-step" data-step="2">Data</div>
+                <div class="progress-step" data-step="3">Preprocess</div>
+                <div class="progress-step" data-step="4">EDA</div>
+                <div class="progress-step" data-step="5">Features</div>
+                <div class="progress-step" data-step="6">Model</div>
+                <div class="progress-step" data-step="7">XAI</div>
+                <div class="progress-step" data-step="8">Recommend</div>
+                <div class="progress-step" data-step="9">Validate</div>
+                <div class="progress-step" data-step="10">Quality</div>
+            </div>
+        </header>
+
+        <!-- Step 1: Decision Context -->
+        <div id="step1" class="step-container active">
+            <h2>Step 1: Decision Context</h2>
+            <p class="step-description">Define what decision you need support for</p>
+            
+            <div class="form-group">
+                <label for="decisionType">Decision Type:</label>
+                <select id="decisionType">
+                    <option value="career">Career Decision</option>
+                    <option value="business">Business Decision</option>
+                    <option value="finance">Financial Decision</option>
+                    <option value="healthcare">Healthcare Decision</option>
+                    <option value="education">Education Decision</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="decisionDescription">Decision Description:</label>
+                <textarea id="decisionDescription" rows="4" 
+                    placeholder="Describe the decision you need to make..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="domain">Domain (Optional):</label>
+                <input type="text" id="domain" placeholder="e.g., Technology, Medicine, etc.">
+            </div>
+            
+            <button class="btn btn-primary" onclick="saveContext()">Continue to Data Input →</button>
+        </div>
+
+        <!-- Step 2: Data Input -->
+        <div id="step2" class="step-container">
+            <h2>Step 2: Data Input</h2>
+            <p class="step-description">Upload your structured data (CSV format)</p>
+            
+            <div class="upload-area">
+                <input type="file" id="csvFile" accept=".csv" style="display: none;">
+                <button class="btn btn-secondary" onclick="document.getElementById('csvFile').click()">
+                    📁 Choose CSV File
+                </button>
+                <p id="fileName" class="file-name"></p>
+            </div>
+            
+            <div id="dataPreview" class="data-preview"></div>
+            
+            <button class="btn btn-primary" onclick="uploadData()" disabled id="uploadBtn">
+                Preprocess Data →
+            </button>
+            <button class="btn btn-back" onclick="goToStep(1)">← Back</button>
+        </div>
+
+        <!-- Step 3: Data Preprocessing -->
+        <div id="step3" class="step-container">
+            <h2>Step 3: Data Preprocessing</h2>
+            <p class="step-description">Data quality checks and preprocessing</p>
+            
+            <div id="preprocessingReport" class="report-container"></div>
+            
+            <button class="btn btn-primary" onclick="goToStep(4)">Continue to EDA →</button>
+            <button class="btn btn-back" onclick="goToStep(2)">← Back</button>
+        </div>
+
+        <!-- Step 4: EDA -->
+        <div id="step4" class="step-container">
+            <h2>Step 4: Exploratory Data Analysis</h2>
+            <p class="step-description">Understanding patterns in your data</p>
+            
+            <div id="edaResults" class="report-container"></div>
+            
+            <button class="btn btn-primary" onclick="goToStep(5)">Continue to Feature Engineering →</button>
+            <button class="btn btn-back" onclick="goToStep(3)">← Back</button>
+        </div>
+
+        <!-- Step 5: Feature Engineering -->
+        <div id="step5" class="step-container">
+            <h2>Step 5: Feature Engineering</h2>
+            <p class="step-description">Select features for model training</p>
+            
+            <div class="form-group">
+                <label>Select Feature Columns:</label>
+                <div id="featureSelection" class="checkbox-group"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="targetColumn">Target Column:</label>
+                <select id="targetColumn"></select>
+            </div>
+            
+            <button class="btn btn-primary" onclick="trainModel()">Train Model →</button>
+            <button class="btn btn-back" onclick="goToStep(4)">← Back</button>
+        </div>
+
+        <!-- Step 6: Model Output -->
+        <div id="step6" class="step-container">
+            <h2>Step 6: Model Output</h2>
+            <p class="step-description">ML model results and performance</p>
+            
+            <div id="modelResults" class="report-container"></div>
+            
+            <button class="btn btn-primary" onclick="generateExplanations()">View Explanations →</button>
+            <button class="btn btn-back" onclick="goToStep(5)">← Back</button>
+        </div>
+
+        <!-- Step 7: Explainable AI -->
+        <div id="step7" class="step-container">
+            <h2>Step 7: Explainable AI</h2>
+            <p class="step-description">Understanding why the model makes predictions</p>
+            
+            <div id="xaiResults" class="report-container"></div>
+            
+            <button class="btn btn-primary" onclick="generateRecommendations()">Generate Recommendations →</button>
+            <button class="btn btn-back" onclick="goToStep(6)">← Back</button>
+        </div>
+
+        <!-- Step 8: Recommendations -->
+        <div id="step8" class="step-container">
+            <h2>Step 8: Decision Recommendations</h2>
+            <p class="step-description">Actionable insights for your decision</p>
+            
+            <div id="recommendations" class="report-container"></div>
+            
+            <button class="btn btn-primary" onclick="goToStep(9)">Provide Validation →</button>
+            <button class="btn btn-back" onclick="goToStep(7)">← Back</button>
+        </div>
+
+        <!-- Step 9: Human Validation -->
+        <div id="step9" class="step-container">
+            <h2>Step 9: Human Validation</h2>
+            <p class="step-description">Your decision on the recommendation</p>
+            
+            <div class="validation-options">
+                <button class="validation-btn" onclick="selectValidation('accept')">
+                    ✅ Accept Recommendation
+                </button>
+                <button class="validation-btn" onclick="selectValidation('modify')">
+                    ✏️ Modify Recommendation
+                </button>
+                <button class="validation-btn" onclick="selectValidation('reject')">
+                    ❌ Reject Recommendation
+                </button>
+            </div>
+            
+            <div id="modifySection" class="form-group" style="display: none;">
+                <label>Modified Recommendation:</label>
+                <textarea id="modifiedRec" rows="3"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Your Comments (Optional):</label>
+                <textarea id="validationComments" rows="3"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Your Confidence (1-10):</label>
+                <input type="range" id="confidenceSlider" min="1" max="10" value="5">
+                <span id="confidenceValue">5</span>
+            </div>
+            
+            <button class="btn btn-primary" onclick="submitValidation()">View Decision Quality →</button>
+            <button class="btn btn-back" onclick="goToStep(8)">← Back</button>
+        </div>
+
+        <!-- Step 10: Decision Quality -->
+        <div id="step10" class="step-container">
+            <h2>Step 10: Decision Quality Metrics</h2>
+            <p class="step-description">Evaluate the quality of the decision-making process</p>
+            
+            <div id="qualityMetrics" class="report-container"></div>
+            
+            <button class="btn btn-success" onclick="resetSystem()">Start New Decision →</button>
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>NEXORA AI - Academic Research Prototype | Built with Classical ML & Explainable AI</p>
+        <p>No chatbots, no generative AI - Pure data science approach</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
