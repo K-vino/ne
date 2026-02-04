@@ -103,10 +103,13 @@ async def upload_data(file: UploadFile = File(...)):
         session_data[session_id]["raw_data"] = data_info
         session_data[session_id]["step"] = 2
         
+        # Don't return DataFrame in response, only metadata
+        response_info = {k: v for k, v in data_info.items() if k != 'dataframe'}
+        
         return {
             "status": "success",
             "message": "Data uploaded successfully",
-            "data_info": data_info
+            "data_info": response_info
         }
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
