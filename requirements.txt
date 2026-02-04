@@ -1,7 +1,7 @@
 # Core Web Framework
-fastapi==0.109.0
+fastapi==0.115.6  # Updated to latest secure version (patched ReDoS vulnerability)
 uvicorn[standard]==0.27.0
-python-multipart==0.0.6
+python-multipart==0.0.22  # Updated to patched version (fixes ReDoS, DoS, and file write vulnerabilities)
 
 # Data Science & ML
 pandas==2.1.4
